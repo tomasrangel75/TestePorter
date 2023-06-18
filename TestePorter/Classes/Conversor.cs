@@ -69,47 +69,24 @@ namespace TestePorter.Classes
 
             return $"{dadosOperacao.Instrucao}\n";
         }
-
-        public Task<string> Executar(int numero)
-        {
-            return RetornaNumeroPorExtenso(numero);
-        }
-
-        public Task<int> Executar(int[] numeros)
-        {
-            return SomaNumerosArray(numeros);
-        }
-
-        public Task<int> Executar(string expressao)
-        {
-            return RetornaResultadoMatematica(expressao);
-        }
-
-        public Task<IList<object>> Executar(IList<object> objetos)
-        {
-            return RemoveObjetosRepetidos(objetos);
-        }
-
-        #endregion
-
-        #region private methods
   
-        private Task<IList<object>> RemoveObjetosRepetidos(IList<object> objetos)
+        public IList<object> RemoveObjetosRepetidos(IList<object> objetos)
         {
             throw new NotImplementedException();
         }
 
-        private Task<string> RetornaNumeroPorExtenso(int numero)
+        public string RetornaNumeroPorExtenso(ulong numero)
+        {
+            var conversorExtensao = new ConversorExtensao();
+            return conversorExtensao.ConverterNumero(numero);
+        }
+
+        public int RetornaResultadoMatematica(string expressao)
         {
             throw new NotImplementedException();
         }
 
-        private Task<int> RetornaResultadoMatematica(string expressao)
-        {
-            throw new NotImplementedException();
-        }
-
-        private Task<int> SomaNumerosArray(int[] numeros)
+        public int SomaNumerosArray(int[] numeros)
         {
             throw new NotImplementedException();
         }

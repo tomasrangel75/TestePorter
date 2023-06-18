@@ -1,6 +1,4 @@
-﻿using TestePorter.Enums;
-
-namespace TestePorter.Interfaces
+﻿namespace TestePorter.Interfaces
 {
     public interface IConversor
     {
@@ -8,21 +6,13 @@ namespace TestePorter.Interfaces
 
         string RetornaInstrucao();
 
-        //Task<string> RetornaNumeroPorExtenso(int numero);
+        string RetornaNumeroPorExtenso(ulong numero);
 
-        //Task<int> SomaNumerosArray(int[] numeros);
+        int SomaNumerosArray(int[] numeros);
 
-        //Task<int> RetornaResultadoMatematica(string expressao);
+        int RetornaResultadoMatematica(string expressao);
 
-        //Task<IList<object>> RemoveObjetosRepetidos(IList<object> objetos);
-
-        Task<string> Executar(int numero);
-
-        Task<int> Executar(int[] numeros);
-
-        Task<int> Executar(string expressao);
-
-        Task<IList<object>> Executar(IList<object> objetos);
+        IList<object> RemoveObjetosRepetidos(IList<object> objetos);
 
     }
 }
