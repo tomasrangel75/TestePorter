@@ -20,5 +20,22 @@ namespace TestProject
 
             Assert.Equal(481, resultado);
         }
+
+        [Fact]
+        public void Teste_Falha_ArrayVazio()
+        {
+            int[] numeros = new int[] { };
+
+            Assert.Throws<ArgumentException>(() => conversor.SomaNumerosArray(numeros));
+        }
+
+        [Fact]
+        public void Teste_Falha_ArrayNula()
+        {
+            int[] numeros = new int[] { };
+            numeros = null;
+
+            Assert.Throws<NullReferenceException>(() => conversor.SomaNumerosArray(numeros));
+        }
     }
 }

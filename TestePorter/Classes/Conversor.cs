@@ -3,6 +3,7 @@ using System;
 using TestePorter.Enums;
 using TestePorter.Interfaces;
 using System.Linq;
+using TestePorter.Exceptions;
 
 namespace TestePorter.Classes
 {
@@ -75,53 +76,106 @@ namespace TestePorter.Classes
   
         public IList<Colaborador>? RemoveObjetosRepetidos(IList<Colaborador> colaboradores)
         {
-            ValidacaoListaColaboradores(colaboradores);
-            return colaboradores.Distinct(new ColaboradorComparer())?.ToList();
+            if(ValidaListaColaboradores(colaboradores)) throw new ArgumentException("Lista inválida.");
+
+            try
+            {
+                return colaboradores.Distinct(new ColaboradorComparer())?.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
         }
 
         public string RetornaNumeroPorExtenso(ulong numero)
         {
-            ValidacaoNumero(numero);
-            IConversorExtensao conversorExtensao = new ConversorExtensao();
-            return conversorExtensao.ConverterNumero(numero);
+            if (ValidaNumero(numero)) throw new ArgumentOutOfRangeException("Número de dígitos inválido.");
+
+            try
+            {
+                IConversorExtensao conversorExtensao = new ConversorExtensao();
+                return conversorExtensao.ConverterNumero(numero);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public string RetornaResultadoMatematica(string expressao)
         {
-            ValidacaoExpressao(expressao);
-            ICalculoMatematico calculoMatematico = new CalculoMatematico();
-            return calculoMatematico.Executar(expressao);
+            if(ValidaExpressaoParenteses(expressao)) throw new InvalidInputException("Input inválido.");
+            if (ValidaDivisaoPorZero(expressao)) throw new DivideByZeroException("Input inválido, divisão por zero.");
+
+            try
+            {
+                ICalculoMatematico calculoMatematico = new CalculoMatematico();
+                return calculoMatematico.Executar(expressao);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
         }
 
         public int SomaNumerosArray(int[] numeros)
         {
-            ValidacaoArrayNumeros(numeros);
+            if (ValidaArrayNumeros(numeros)) throw new ArgumentException("Array vazio.");
 
-            return numeros.Sum();
+            try
+            {
+                var sum = numeros.AsParallel().Sum();
+
+                return sum;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         #endregion
 
         #region private methods
 
-        private void ValidacaoListaColaboradores(IList<Colaborador> colaboradores)
+        private static bool ValidaListaColaboradores(IList<Colaborador> colaboradores)
         {
-            throw new NotImplementedException();
+            return colaboradores.Count == 0;
         }
 
-        private void ValidacaoNumero(ulong numero)
+        private static bool ValidaNumero(ulong numero)
         {
-            throw new NotImplementedException();
+            if(numero == 0) return false;
+
+            var count = 0;
+
+            while (numero > 0)
+            {
+                numero = numero / 10;
+                count++;
+            }
+
+            return count < 1 || count > 9;
         }
 
-        private void ValidacaoExpressao(string expressao)
+        private static bool ValidaExpressaoParenteses(string expressao)
         {
-            throw new NotImplementedException();
+            return expressao.Contains('(') || expressao.Contains(')');
         }
 
-        private void ValidacaoArrayNumeros(int[] numeros)
+        private static bool ValidaDivisaoPorZero(string expressao)
         {
-            throw new NotImplementedException();
+            return expressao.Contains("/0");
+        }
+
+        private static bool ValidaArrayNumeros(int[] numeros)
+        {
+            return numeros.Length < 1;
         }
 
         #endregion

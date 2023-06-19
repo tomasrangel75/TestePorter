@@ -1,4 +1,5 @@
-﻿using TestePorter.Interfaces;
+﻿using TestePorter.Exceptions;
+using TestePorter.Interfaces;
 
 namespace TestePorter.Classes
 {
@@ -24,7 +25,7 @@ namespace TestePorter.Classes
                 {
 
                     string innerExp = "";
-                    i++; //Fetch Next Character
+                    i++; 
                     int bracketCount = 0;
                     for (; i < expressaoMatematica.Length; i++)
                     {
@@ -59,14 +60,14 @@ namespace TestePorter.Classes
                     value += s;
 
                     if (value.Split('.').Length > 2)
-                        throw new Exception("Decimal inválido.");
+                        throw new InvalidInputException("Decimal inválido.");
 
                     if (i == (expressaoMatematica.Length - 1))
                         stack.Push(value);
 
                 }
                 else
-                    throw new Exception("Caracter inválido.");
+                    throw new InvalidInputException("Caracter inválido.");
 
             }
 

@@ -10,10 +10,10 @@ namespace TestePorter.Classes
             if (value == 0)
                 return "zero";
 
-            string text = value.ToString();
-            List<string> firstList = new List<string>();
-            int currentSection = 0;
-            bool wasAddedAnd = false;
+            var text = value.ToString();
+            var firstList = new List<string>();
+            var currentSection = 0;
+            var wasAddedAnd = false;
 
             for (int i = text.Length - 1; i >= 0; i = i - 3)
             {
@@ -45,11 +45,10 @@ namespace TestePorter.Classes
                 }
                 else if (!isEmpty)
                 {
-                    Section section = sections[currentSection];
+                    Section section = Sections[currentSection];
                     firstList.Add(section.Text);
                 }
 
-                //ext armazena três dígitos
                 string ext = Ext(d3, d2, d1);
                 firstList.Add(ext);
                 bool lastTime = i == 0 || i == 1 || i == 2;
@@ -65,8 +64,8 @@ namespace TestePorter.Classes
                 currentSection++;
             }
 
-            StringBuilder result = new StringBuilder();
-            List<string> secondList = new List<string>();
+            var result = new StringBuilder();
+            var secondList = new List<string>();
 
             foreach (string val in firstList)
                 if (val != string.Empty)
@@ -81,9 +80,6 @@ namespace TestePorter.Classes
                 {
                     string nextVal = secondList[i - 1];
 
-                    /*Verificando se i != 0 para 
-                    não colocar espaço no fim da string*/
-
                     if (nextVal != "," && i != 0)
                         result.Append(' ');
                 }
@@ -92,7 +88,7 @@ namespace TestePorter.Classes
             return result.ToString();
         }
 
-        #region private methods 
+        #region private classes
 
         private class Number
         {
@@ -113,10 +109,10 @@ namespace TestePorter.Classes
             public Number(int digit, string text)
             {
                 if (digit < 0 || digit > 9)
-                    throw new ArgumentException("digit is invalid " + digit);
+                    throw new ArgumentException("Dígito inválido: " + digit);
 
                 if (text == null)
-                    throw new ArgumentException("text is null");
+                    throw new ArgumentException("Texto nulo");
 
                 this.digit = digit;
                 this.text = text;
@@ -126,82 +122,6 @@ namespace TestePorter.Classes
             {
                 return text + "-" + digit;
             }
-        }
-
-        private static readonly Number[] decimal1 = new Number[] { new Number(1,"um"  ),
-                                                                   new Number(2,"dois"),
-                                                                   new Number(3,"três"),
-                                                                   new Number(4,"quatro"),
-                                                                   new Number(5,"cinco"),
-                                                                   new Number(6,"seis"),
-                                                                   new Number(7,"sete"),
-                                                                   new Number(8,"oito"),
-                                                                   new Number(9,"nove")
-                                                                 };
-
-        private static readonly Number[] afterTen = new Number[] { new Number(1,"onze"),
-                                                                   new Number(2,"doze"),
-                                                                   new Number(3,"treze"),
-                                                                   new Number(4,"quatorze"),
-                                                                   new Number(5,"quinze"),
-                                                                   new Number(6,"dezeseis"),
-                                                                   new Number(7,"dezesete"),
-                                                                   new Number(8,"dezoito"),
-                                                                   new Number(9,"dezenove")
-                                                                 };
-
-        private static readonly Number[] decimal2 = new Number[] { new Number(1,"dez"),
-                                                                   new Number(2,"vinte"),
-                                                                   new Number(3,"trinta"),
-                                                                   new Number(4,"quarenta"),
-                                                                   new Number(5,"cinquenta"),
-                                                                   new Number(6,"sessenta"),
-                                                                   new Number(7,"setenta"),
-                                                                   new Number(8,"oitenta"),
-                                                                   new Number(9,"noventa")
-                                                                 };
-
-        private static readonly Number[] decimal3 = new Number[] { new Number(1,"cento"),
-                                                                   new Number(2,"duzentos"),
-                                                                   new Number(3,"trezentos"),
-                                                                   new Number(4,"quatrocentos"),
-                                                                   new Number(5,"quinhentos"),
-                                                                   new Number(6,"seiscentos"),
-                                                                   new Number(7,"setecentos"),
-                                                                   new Number(8,"oitocentos"),
-                                                                   new Number(9,"novecentos")
-                                                                 };
-
-        private const int DECIMAL1 = 0;
-
-        private const int AFTER_TEN = 1;
-
-        private const int DECIMAL2 = 2;
-
-        private const int DECIMAL3 = 3;
-
-        private static readonly Number[][] decimals = new Number[][] { decimal1,
-                                                                       afterTen,
-                                                                       decimal2,
-                                                                       decimal3 };
-
-        private static Number FindNumber(int dec, int digit)
-        {
-            if (dec < 0 || dec > 3)
-                throw new ArgumentException("dec is out of range: " + dec);
-
-            if (digit < 1 || digit > 9)
-                throw new ArgumentException("digit is out of range: " + digit);
-
-            Number[] array = decimals[dec];
-
-            foreach (Number n in array)
-            {
-                if (digit == n.Digit)
-                    return n;
-            }
-
-            throw new Exception("Internal error of FindNumber");
         }
 
         private class Section
@@ -237,10 +157,10 @@ namespace TestePorter.Classes
             private Section(int sectionValue, string text)
             {
                 if (sectionValue < 0)
-                    throw new ArgumentException("sectionValue is invalid:" + sectionValue);
+                    throw new ArgumentException("Valor inválido:" + sectionValue);
 
                 if (sectionValue > 6)
-                    throw new ArgumentException("sectionValue has an unsupported value :" + sectionValue);
+                    throw new ArgumentException("Valor inválido :" + sectionValue);
 
                 this.sectionValue = sectionValue;
                 this.text = text;
@@ -252,7 +172,72 @@ namespace TestePorter.Classes
             }
         }
 
-        private static readonly Section[] sections = new Section[] {Section.empty,
+        #endregion
+
+        #region const
+
+        private const int DECIMAL1 = 0;
+
+        private const int AFTER_TEN = 1;
+
+        private const int DECIMAL2 = 2;
+
+        private const int DECIMAL3 = 3;
+
+        #endregion
+
+        #region fields 
+
+        private static readonly Number[] Decimal1 = new Number[] { new Number(1,"um"  ),
+                                                                   new Number(2,"dois"),
+                                                                   new Number(3,"três"),
+                                                                   new Number(4,"quatro"),
+                                                                   new Number(5,"cinco"),
+                                                                   new Number(6,"seis"),
+                                                                   new Number(7,"sete"),
+                                                                   new Number(8,"oito"),
+                                                                   new Number(9,"nove")
+                                                                 };
+
+        private static readonly Number[] AfterTen = new Number[] { new Number(1,"onze"),
+                                                                   new Number(2,"doze"),
+                                                                   new Number(3,"treze"),
+                                                                   new Number(4,"quatorze"),
+                                                                   new Number(5,"quinze"),
+                                                                   new Number(6,"dezeseis"),
+                                                                   new Number(7,"dezesete"),
+                                                                   new Number(8,"dezoito"),
+                                                                   new Number(9,"dezenove")
+                                                                 };
+
+        private static readonly Number[] Decimal2 = new Number[] { new Number(1,"dez"),
+                                                                   new Number(2,"vinte"),
+                                                                   new Number(3,"trinta"),
+                                                                   new Number(4,"quarenta"),
+                                                                   new Number(5,"cinquenta"),
+                                                                   new Number(6,"sessenta"),
+                                                                   new Number(7,"setenta"),
+                                                                   new Number(8,"oitenta"),
+                                                                   new Number(9,"noventa")
+                                                                 };
+
+        private static readonly Number[] Decimal3 = new Number[] { new Number(1,"cento"),
+                                                                   new Number(2,"duzentos"),
+                                                                   new Number(3,"trezentos"),
+                                                                   new Number(4,"quatrocentos"),
+                                                                   new Number(5,"quinhentos"),
+                                                                   new Number(6,"seiscentos"),
+                                                                   new Number(7,"setecentos"),
+                                                                   new Number(8,"oitocentos"),
+                                                                   new Number(9,"novecentos")
+                                                                 };
+
+        private static readonly Number[][] Decimals = new Number[][] { Decimal1,
+                                                                       AfterTen,
+                                                                       Decimal2,
+                                                                       Decimal3 };
+
+        private static readonly Section[] Sections = new Section[] {Section.empty,
                                                                     Section.thousand,
                                                                     Section.million,
                                                                     Section.billion,
@@ -261,12 +246,34 @@ namespace TestePorter.Classes
                                                                     Section.quintillion
                                                                    };
 
+        #endregion
+
+        #region private methods 
+        private static Number FindNumber(int dec, int digit)
+        {
+            if (dec < 0 || dec > 3)
+                throw new ArgumentOutOfRangeException("Dígito inválido: " + dec);
+
+            if (digit < 1 || digit > 9)
+                throw new ArgumentOutOfRangeException("Número de dígitos inválido: " + digit);
+
+            Number[] array = Decimals[dec];
+
+            foreach (Number n in array)
+            {
+                if (digit == n.Digit)
+                    return n;
+            }
+
+            throw new Exception();
+        }
+
         private static string Ext(string d3, string d2, string d1)
         {
-            Number number1 = (d1 != "0" ? FindNumber(DECIMAL1, Convert.ToInt32(d1)) : null);
-            Number afterTen = (d1 != "0" ? FindNumber(AFTER_TEN, Convert.ToInt32(d1)) : null);
-            Number number2 = (d2 != "0" ? FindNumber(DECIMAL2, Convert.ToInt32(d2)) : null);
-            Number number3 = (d3 != "0" ? FindNumber(DECIMAL3, Convert.ToInt32(d3)) : null);
+            Number number1 = d1 != "0" ? FindNumber(DECIMAL1, Convert.ToInt32(d1)) : null;
+            Number afterTen = d1 != "0" ? FindNumber(AFTER_TEN, Convert.ToInt32(d1)) : null;
+            Number number2 = d2 != "0" ? FindNumber(DECIMAL2, Convert.ToInt32(d2)) : null;
+            Number number3 = d3 != "0" ? FindNumber(DECIMAL3, Convert.ToInt32(d3)) : null;
 
             if (d2 == "1")
             {
