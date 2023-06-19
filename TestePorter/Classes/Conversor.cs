@@ -1,5 +1,8 @@
-﻿using TestePorter.Enums;
+﻿using Microsoft.VisualBasic;
+using System;
+using TestePorter.Enums;
 using TestePorter.Interfaces;
+using System.Linq;
 
 namespace TestePorter.Classes
 {
@@ -70,23 +73,53 @@ namespace TestePorter.Classes
             return $"{dadosOperacao.Instrucao}\n";
         }
   
-        public IList<object> RemoveObjetosRepetidos(IList<object> objetos)
+        public IList<Colaborador>? RemoveObjetosRepetidos(IList<Colaborador> colaboradores)
         {
-            throw new NotImplementedException();
+            ValidacaoListaColaboradores(colaboradores);
+            return colaboradores.Distinct(new ColaboradorComparer())?.ToList();
         }
 
         public string RetornaNumeroPorExtenso(ulong numero)
         {
-            var conversorExtensao = new ConversorExtensao();
+            ValidacaoNumero(numero);
+            IConversorExtensao conversorExtensao = new ConversorExtensao();
             return conversorExtensao.ConverterNumero(numero);
         }
 
-        public int RetornaResultadoMatematica(string expressao)
+        public string RetornaResultadoMatematica(string expressao)
+        {
+            ValidacaoExpressao(expressao);
+            ICalculoMatematico calculoMatematico = new CalculoMatematico();
+            return calculoMatematico.Executar(expressao);
+        }
+
+        public int SomaNumerosArray(int[] numeros)
+        {
+            ValidacaoArrayNumeros(numeros);
+
+            return numeros.Sum();
+        }
+
+        #endregion
+
+        #region private methods
+
+        private void ValidacaoListaColaboradores(IList<Colaborador> colaboradores)
         {
             throw new NotImplementedException();
         }
 
-        public int SomaNumerosArray(int[] numeros)
+        private void ValidacaoNumero(ulong numero)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ValidacaoExpressao(string expressao)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ValidacaoArrayNumeros(int[] numeros)
         {
             throw new NotImplementedException();
         }

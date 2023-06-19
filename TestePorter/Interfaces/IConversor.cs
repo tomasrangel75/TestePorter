@@ -1,4 +1,6 @@
-﻿namespace TestePorter.Interfaces
+﻿using TestePorter.Classes;
+
+namespace TestePorter.Interfaces
 {
     public interface IConversor
     {
@@ -10,9 +12,9 @@
 
         int SomaNumerosArray(int[] numeros);
 
-        int RetornaResultadoMatematica(string expressao);
+        string RetornaResultadoMatematica(string expressao);
 
-        IList<object> RemoveObjetosRepetidos(IList<object> objetos);
+        IList<Colaborador>? RemoveObjetosRepetidos(IList<Colaborador> colaboradores);
 
     }
 }
