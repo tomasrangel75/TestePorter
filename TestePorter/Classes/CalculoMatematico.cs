@@ -3,7 +3,7 @@ using TestePorter.Interfaces;
 
 namespace TestePorter.Classes
 {
-    public class CalculoMatematico: ICalculoMatematico
+    public class CalculoMatematico : ICalculoMatematico
     {
         public string Executar(string expressaoMatematica)
         {
@@ -25,7 +25,7 @@ namespace TestePorter.Classes
                 {
 
                     string innerExp = "";
-                    i++; 
+                    i++;
                     int bracketCount = 0;
                     for (; i < expressaoMatematica.Length; i++)
                     {
@@ -62,7 +62,7 @@ namespace TestePorter.Classes
                     if (value.Split('.').Length > 2)
                         throw new InvalidInputException("Decimal inválido.");
 
-                    if (i == (expressaoMatematica.Length - 1))
+                    if (i == expressaoMatematica.Length - 1)
                         stack.Push(value);
 
                 }

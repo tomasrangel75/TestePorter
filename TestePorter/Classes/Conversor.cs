@@ -60,7 +60,7 @@ namespace TestePorter.Classes
 
             foreach (var op in RetornaOperacoes())
             {
-                listaDeInstrucoes.Add($"Digite {((int)op.Operacao)} para {op.Descricao}\n");
+                listaDeInstrucoes.Add($"Digite {(int)op.Operacao} para {op.Descricao}\n");
             };
 
             return listaDeInstrucoes;
@@ -73,10 +73,10 @@ namespace TestePorter.Classes
 
             return $"{dadosOperacao.Instrucao}\n";
         }
-  
+
         public IList<Colaborador>? RemoveObjetosRepetidos(IList<Colaborador> colaboradores)
         {
-            if(ValidaListaColaboradores(colaboradores)) throw new ArgumentException("Lista inválida.");
+            if (ValidaListaColaboradores(colaboradores)) throw new ArgumentException("Lista inválida.");
 
             try
             {
@@ -86,7 +86,7 @@ namespace TestePorter.Classes
             {
                 throw;
             }
-            
+
         }
 
         public string RetornaNumeroPorExtenso(ulong numero)
@@ -106,7 +106,7 @@ namespace TestePorter.Classes
 
         public string RetornaResultadoMatematica(string expressao)
         {
-            if(ValidaExpressaoParenteses(expressao)) throw new InvalidInputException("Input inválido.");
+            if (ValidaExpressaoParenteses(expressao)) throw new InvalidInputException("Input inválido.");
             if (ValidaDivisaoPorZero(expressao)) throw new DivideByZeroException("Input inválido, divisão por zero.");
 
             try
@@ -119,7 +119,7 @@ namespace TestePorter.Classes
 
                 throw;
             }
-           
+
         }
 
         public int SomaNumerosArray(int[] numeros)
@@ -150,7 +150,7 @@ namespace TestePorter.Classes
 
         private static bool ValidaNumero(ulong numero)
         {
-            if(numero == 0) return false;
+            if (numero == 0) return false;
 
             var count = 0;
 

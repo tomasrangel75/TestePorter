@@ -18,12 +18,12 @@ namespace TestePorter.Classes
             for (int i = text.Length - 1; i >= 0; i = i - 3)
             {
                 string d1 = text[i].ToString();
-                string d2 = (i - 1 >= 0 ? text[i - 1].ToString() : "0");
-                string d3 = (i - 2 >= 0 ? text[i - 2].ToString() : "0");
-                bool isEmpty = (d1 == "0" && d2 == "0" && d3 == "0");
+                string d2 = i - 1 >= 0 ? text[i - 1].ToString() : "0";
+                string d3 = i - 2 >= 0 ? text[i - 2].ToString() : "0";
+                bool isEmpty = d1 == "0" && d2 == "0" && d3 == "0";
 
-                if ((d3 == "0")
-                && (d2 == "0")
+                if (d3 == "0"
+                && d2 == "0"
                 && d1 == "1")
                 {
                     if (currentSection == 1)
@@ -278,7 +278,7 @@ namespace TestePorter.Classes
             if (d2 == "1")
             {
                 if (number3 == null)
-                    return (afterTen != null ? afterTen.Text : number2.Text);
+                    return afterTen != null ? afterTen.Text : number2.Text;
                 else
                 {
                     return number3.Text
@@ -334,7 +334,7 @@ namespace TestePorter.Classes
 
             return string.Empty;
         }
-     
+
         #endregion
 
     }
