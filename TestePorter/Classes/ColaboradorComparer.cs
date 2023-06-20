@@ -1,8 +1,8 @@
 ﻿namespace TestePorter.Classes
 {
-    public class ColaboradorComparer : IEqualityComparer<Colaborador>
+    public class DevComparer : IEqualityComparer<Dev>
     {
-        public bool Equals(Colaborador x, Colaborador y)
+        public bool Equals(Dev x, Dev y)
         {
             if (Object.ReferenceEquals(x, y)) 
                 return true;
@@ -13,11 +13,11 @@
             return x.Nome == y.Nome && x.Cargo == y.Cargo;
         }
 
-        public int GetHashCode(Colaborador colaborador)
+        public int GetHashCode(Dev dev)
         {
-            if (colaborador is null) return 0;
-            int hashDevNome = colaborador.Nome == null ? 0 : colaborador.Nome.GetHashCode();
-            int hashDevLing = colaborador.Cargo.GetHashCode();
+            if (dev is null) return 0;
+            int hashDevNome = dev.Nome == null ? 0 : dev.Nome.GetHashCode();
+            int hashDevLing = dev.Cargo.GetHashCode();
             return hashDevNome ^ hashDevLing;
         }
     }

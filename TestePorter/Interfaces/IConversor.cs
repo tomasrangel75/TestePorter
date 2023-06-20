@@ -14,7 +14,7 @@ namespace TestePorter.Interfaces
 
         string RetornaResultadoMatematica(string expressao);
 
-        IList<Colaborador>? RemoveObjetosRepetidos(IList<Colaborador> colaboradores);
+        IList<Dev>? RemoveObjetosRepetidos(IList<Dev> devs);
 
     }
 }

@@ -89,13 +89,13 @@ namespace TestePorter.Classes
             return $"{dadosOperacao.Instrucao}\n";
         }
 
-        public IList<Colaborador>? RemoveObjetosRepetidos(IList<Colaborador> colaboradores)
+        public IList<Dev>? RemoveObjetosRepetidos(IList<Dev> devs)
         {
-            if (ValidaListaColaboradores(colaboradores)) throw new ArgumentException("Lista inválida.");
+            if (ListaDevsInvalida(devs)) throw new ArgumentException("Lista inválida.");
 
             try
             {
-                return colaboradores.Distinct(new ColaboradorComparer())?.ToList();
+                return devs.Distinct(new DevComparer())?.ToList();
             }
             catch (Exception)
             {
@@ -106,7 +106,7 @@ namespace TestePorter.Classes
 
         public string RetornaNumeroPorExtenso(ulong numero)
         {
-            if (ValidaNumero(numero)) throw new ArgumentOutOfRangeException("Número de dígitos inválido.");
+            if (NumeroInvalido(numero)) throw new ArgumentOutOfRangeException("Número de dígitos inválido.");
 
             try
             {
@@ -121,8 +121,8 @@ namespace TestePorter.Classes
 
         public string RetornaResultadoMatematica(string expressao)
         {
-            if (!ExpressaoValida(expressao)) throw new InvalidInputException("Input inválido.");
-            if (!DivisaoPorZeroValida(expressao)) throw new DivideByZeroException("Input inválido, divisão por zero.");
+            if (ExpressaoInvalida(expressao)) throw new InvalidInputException("Input inválido.");
+            if (DivisaoPorZero(expressao)) throw new DivideByZeroException("Input inválido, divisão por zero.");
 
             try
             {
@@ -139,7 +139,7 @@ namespace TestePorter.Classes
 
         public int SomaNumerosArray(int[] numeros)
         {
-            if (ValidaArrayNumeros(numeros)) throw new ArgumentException("Array vazio.");
+            if (ArrayNumerosInvalido(numeros)) throw new ArgumentException("Array vazio.");
 
             try
             {
@@ -158,12 +158,12 @@ namespace TestePorter.Classes
 
         #region private methods
 
-        private static bool ValidaListaColaboradores(IList<Colaborador> colaboradores)
+        private static bool ListaDevsInvalida(IList<Dev> devs)
         {
-            return colaboradores.Count == 0;
+            return devs.Count == 0;
         }
 
-        private static bool ValidaNumero(ulong numero)
+        private static bool NumeroInvalido(ulong numero)
         {
             if (numero == 0) return false;
 
@@ -178,7 +178,7 @@ namespace TestePorter.Classes
             return count < 1 || count > 9;
         }
 
-        private static bool ExpressaoValida(string expressao)
+        private static bool ExpressaoInvalida(string expressao)
         {
             var itemAnterior = "";
             var contador = 0;
@@ -186,25 +186,25 @@ namespace TestePorter.Classes
             foreach (var item in expressao)
             {
                 var strItem = item.ToString();
-                if(Operadores.Contains(strItem) && Operadores.Contains(itemAnterior)) return false;
+                if(Operadores.Contains(strItem) && Operadores.Contains(itemAnterior)) return true;
                 ++contador;
 
-                if ((contador == 1 || contador == expressao.Length ) && Operadores.Contains(strItem)) return false;
+                if ((contador == 1 || contador == expressao.Length ) && Operadores.Contains(strItem)) return true;
       
-                if (!list.Contains(strItem)) return false;
+                if (!list.Contains(strItem)) return true;
 
                 itemAnterior = strItem;
             }
 
-            return true;
+            return false;
         }
 
-        private static bool DivisaoPorZeroValida(string expressao)
+        private static bool DivisaoPorZero(string expressao)
         {
-            return !expressao.Contains("/0");
+            return expressao.Contains("/0");
         }
 
-        private static bool ValidaArrayNumeros(int[] numeros)
+        private static bool ArrayNumerosInvalido(int[] numeros)
         {
             return numeros.Length < 1;
         }
