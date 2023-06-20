@@ -4,6 +4,7 @@ using TestePorter.Enums;
 using TestePorter.Interfaces;
 using System.Linq;
 using TestePorter.Exceptions;
+using System.Diagnostics.Metrics;
 
 namespace TestePorter.Classes
 {
@@ -18,6 +19,20 @@ namespace TestePorter.Classes
         #region props
 
         public Operacao OperacaoEscolhida { get; set; }
+
+        #endregion
+
+        #region fields
+
+        private static readonly List<string> list = new List<string>()
+            {
+                "1","2","3","4","5","6","7","8","9","0","+","-","/","*"
+            };
+
+        private static readonly List<string> Operadores = new List<string>()
+            {
+                "+","-","/","*"
+            };
 
         #endregion
 
@@ -106,8 +121,8 @@ namespace TestePorter.Classes
 
         public string RetornaResultadoMatematica(string expressao)
         {
-            if (ValidaExpressaoParenteses(expressao)) throw new InvalidInputException("Input inválido.");
-            if (ValidaDivisaoPorZero(expressao)) throw new DivideByZeroException("Input inválido, divisão por zero.");
+            if (!ExpressaoValida(expressao)) throw new InvalidInputException("Input inválido.");
+            if (!DivisaoPorZeroValida(expressao)) throw new DivideByZeroException("Input inválido, divisão por zero.");
 
             try
             {
@@ -163,14 +178,30 @@ namespace TestePorter.Classes
             return count < 1 || count > 9;
         }
 
-        private static bool ValidaExpressaoParenteses(string expressao)
+        private static bool ExpressaoValida(string expressao)
         {
-            return expressao.Contains('(') || expressao.Contains(')');
+            var itemAnterior = "";
+            var contador = 0;
+
+            foreach (var item in expressao)
+            {
+                var strItem = item.ToString();
+                if(Operadores.Contains(strItem) && Operadores.Contains(itemAnterior)) return false;
+                ++contador;
+
+                if ((contador == 1 || contador == expressao.Length ) && Operadores.Contains(strItem)) return false;
+      
+                if (!list.Contains(strItem)) return false;
+
+                itemAnterior = strItem;
+            }
+
+            return true;
         }
 
-        private static bool ValidaDivisaoPorZero(string expressao)
+        private static bool DivisaoPorZeroValida(string expressao)
         {
-            return expressao.Contains("/0");
+            return !expressao.Contains("/0");
         }
 
         private static bool ValidaArrayNumeros(int[] numeros)
