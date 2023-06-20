@@ -4,6 +4,8 @@ using TestePorter.Enums;
 using TestePorter.Interfaces;
 using System.Linq;
 using TestePorter.Exceptions;
+using System.Diagnostics.Metrics;
+using System.Collections.Concurrent;
 
 namespace TestePorter.Classes
 {
@@ -18,6 +20,20 @@ namespace TestePorter.Classes
         #region props
 
         public Operacao OperacaoEscolhida { get; set; }
+
+        #endregion
+
+        #region fields
+
+        private static readonly List<string> list = new List<string>()
+            {
+                "1","2","3","4","5","6","7","8","9","0","+","-","/","*"
+            };
+
+        private static readonly List<string> Operadores = new List<string>()
+            {
+                "+","-","/","*"
+            };
 
         #endregion
 
@@ -74,13 +90,13 @@ namespace TestePorter.Classes
             return $"{dadosOperacao.Instrucao}\n";
         }
 
-        public IList<Colaborador>? RemoveObjetosRepetidos(IList<Colaborador> colaboradores)
+        public IList<Dev>? RemoveObjetosRepetidos(IList<Dev> devs)
         {
-            if (ValidaListaColaboradores(colaboradores)) throw new ArgumentException("Lista inválida.");
+            if (ListaDevsInvalida(devs)) throw new ArgumentException("Lista inválida.");
 
             try
             {
-                return colaboradores.Distinct(new ColaboradorComparer())?.ToList();
+                return devs.Distinct(new DevComparer())?.ToList();
             }
             catch (Exception)
             {
@@ -91,7 +107,7 @@ namespace TestePorter.Classes
 
         public string RetornaNumeroPorExtenso(ulong numero)
         {
-            if (ValidaNumero(numero)) throw new ArgumentOutOfRangeException("Número de dígitos inválido.");
+            if (NumeroInvalido(numero)) throw new ArgumentOutOfRangeException("Número de dígitos inválido.");
 
             try
             {
@@ -106,8 +122,8 @@ namespace TestePorter.Classes
 
         public string RetornaResultadoMatematica(string expressao)
         {
-            if (ValidaExpressaoParenteses(expressao)) throw new InvalidInputException("Input inválido.");
-            if (ValidaDivisaoPorZero(expressao)) throw new DivideByZeroException("Input inválido, divisão por zero.");
+            if (ExpressaoInvalida(expressao)) throw new InvalidInputException("Input inválido.");
+            if (DivisaoPorZero(expressao)) throw new DivideByZeroException("Input inválido, divisão por zero.");
 
             try
             {
@@ -122,13 +138,24 @@ namespace TestePorter.Classes
 
         }
 
-        public int SomaNumerosArray(int[] numeros)
+        public long SomaNumerosArray(int[] numeros)
         {
-            if (ValidaArrayNumeros(numeros)) throw new ArgumentException("Array vazio.");
+            if (ArrayNumerosInvalido(numeros)) throw new ArgumentException("Array vazio.");
 
             try
             {
-                var sum = numeros.AsParallel().Sum();
+                long sum = 0;
+                var options = new ParallelOptions()
+                { MaxDegreeOfParallelism = Environment.ProcessorCount };
+                Parallel.ForEach(Partitioner.Create(0, numeros.Length), options, range =>
+                {
+                    long localSum = 0;
+                    for (int i = range.Item1; i < range.Item2; i++)
+                    {
+                        localSum += numeros[i];
+                    }
+                    Interlocked.Add(ref sum, localSum);
+                });
 
                 return sum;
             }
@@ -143,12 +170,12 @@ namespace TestePorter.Classes
 
         #region private methods
 
-        private static bool ValidaListaColaboradores(IList<Colaborador> colaboradores)
+        private static bool ListaDevsInvalida(IList<Dev> devs)
         {
-            return colaboradores.Count == 0;
+            return devs.Count == 0;
         }
 
-        private static bool ValidaNumero(ulong numero)
+        private static bool NumeroInvalido(ulong numero)
         {
             if (numero == 0) return false;
 
@@ -163,17 +190,33 @@ namespace TestePorter.Classes
             return count < 1 || count > 9;
         }
 
-        private static bool ValidaExpressaoParenteses(string expressao)
+        private static bool ExpressaoInvalida(string expressao)
         {
-            return expressao.Contains('(') || expressao.Contains(')');
+            var itemAnterior = "";
+            var contador = 0;
+
+            foreach (var item in expressao)
+            {
+                var strItem = item.ToString();
+                if(Operadores.Contains(strItem) && Operadores.Contains(itemAnterior)) return true;
+                ++contador;
+
+                if ((contador == 1 || contador == expressao.Length ) && Operadores.Contains(strItem)) return true;
+      
+                if (!list.Contains(strItem)) return true;
+
+                itemAnterior = strItem;
+            }
+
+            return false;
         }
 
-        private static bool ValidaDivisaoPorZero(string expressao)
+        private static bool DivisaoPorZero(string expressao)
         {
             return expressao.Contains("/0");
         }
 
-        private static bool ValidaArrayNumeros(int[] numeros)
+        private static bool ArrayNumerosInvalido(int[] numeros)
         {
             return numeros.Length < 1;
         }

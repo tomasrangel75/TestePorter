@@ -2,7 +2,7 @@
 {
     public interface ICalculoMatematico
     {
-        string Executar(string expressaoMatematica);
+        string Executar(string expressao);
     }
 
 }

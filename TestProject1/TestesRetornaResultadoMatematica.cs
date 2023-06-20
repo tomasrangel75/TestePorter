@@ -67,5 +67,29 @@ namespace TestProject
 
             Assert.Throws<DivideByZeroException>(() => conversor.RetornaResultadoMatematica(expressaoMatematica));
         }
+
+        [Fact]
+        public void Teste_ExpressaoComDoisOperadoresSeguidos_Falha()
+        {
+            string expressaoMatematica = "2**2+1";
+
+            Assert.Throws<InvalidInputException>(() => conversor.RetornaResultadoMatematica(expressaoMatematica));
+        }
+
+        [Fact]
+        public void Teste_ExpressaoComDivisorNoInicio_Falha()
+        {
+            string expressaoMatematica = "/2*2+1";
+
+            Assert.Throws<InvalidInputException>(() => conversor.RetornaResultadoMatematica(expressaoMatematica));
+        }
+
+        [Fact]
+        public void Teste_ExpressaoComDivisorNoFinal_Falha()
+        {
+            string expressaoMatematica = "2*2+1+";
+
+            Assert.Throws<InvalidInputException>(() => conversor.RetornaResultadoMatematica(expressaoMatematica));
+        }
     }
 }

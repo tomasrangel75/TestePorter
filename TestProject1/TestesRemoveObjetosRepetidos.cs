@@ -14,7 +14,7 @@ namespace TestProject
         [Fact]
         public void Teste_FiltraLista_Sucesso()
         {
-            List<Colaborador> listaDeColaboradores = RetornaColaboradores();
+            List<Dev> listaDeColaboradores = RetornaColaboradores();
 
             listaDeColaboradores.RemoveAt(6);
             listaDeColaboradores.RemoveAt(5);
@@ -22,14 +22,14 @@ namespace TestProject
 
             var resultado = conversor.RemoveObjetosRepetidos(listaDeColaboradores).ToList();
 
-            Assert.Equal<List<Colaborador>>(listaDeColaboradores, resultado);
+            Assert.Equal<List<Dev>>(listaDeColaboradores, resultado);
         }
 
 
         [Fact]
         public void Teste_ListaVazia_Falha()
         {
-            var listaDeColaboradores = new List<Colaborador>();
+            var listaDeColaboradores = new List<Dev>();
 
             Assert.Throws<ArgumentException>(() => conversor.RemoveObjetosRepetidos(listaDeColaboradores));
         }
@@ -38,7 +38,7 @@ namespace TestProject
         [Fact]
         public void Teste_ListaNula_Falha()
         {
-            var listaDeColaboradores = new List<Colaborador>();
+            var listaDeColaboradores = new List<Dev>();
             listaDeColaboradores = null;
 
             Assert.Throws<NullReferenceException>(() => conversor.RemoveObjetosRepetidos(listaDeColaboradores));
@@ -48,48 +48,48 @@ namespace TestProject
         [Fact]
         public void Teste_Propriedade_Nula_Hash_Falha()
         {
-            List<Colaborador> listaDeColaboradores = RetornaColaboradorPropriedadeNula();
+            List<Dev> listaDeColaboradores = RetornaColaboradorPropriedadeNula();
 
             Assert.Throws<NullReferenceException>(() => conversor.RemoveObjetosRepetidos(listaDeColaboradores));
         }
 
         #region private methods
 
-        private static List<Colaborador> RetornaColaboradores()
+        private static List<Dev> RetornaColaboradores()
         {
-            return new List<Colaborador>()
+            return new List<Dev>()
             {
-                new Colaborador()
+                new Dev()
                 {
                     Nome = "José da Silva",
                     Cargo = "Digitador"
                 },
-                new Colaborador()
+                new Dev()
                 {
                     Nome = "Everton da Silva",
                     Cargo = "Digitador"
                 },
-                new Colaborador()
+                new Dev()
                 {
                     Nome = "André Gouveia",
                     Cargo = "Digitador"
                 },
-                new Colaborador()
+                new Dev()
                 {
                     Nome = "Armando Alvarez",
                     Cargo = "Digitador"
                 },
-                new Colaborador()
+                new Dev()
                 {
                     Nome = "José da Silva",
                     Cargo = "Digitador"
                 },
-                new Colaborador()
+                new Dev()
                 {
                     Nome = "José da Silva",
                     Cargo = "Digitador"
                 },
-                new Colaborador()
+                new Dev()
                 {
                      Nome = "Armando Alvarez",
                     Cargo = "Digitador"
@@ -97,11 +97,11 @@ namespace TestProject
             };
         }
 
-        private static List<Colaborador> RetornaColaboradorPropriedadeNula()
+        private static List<Dev> RetornaColaboradorPropriedadeNula()
         {
-            return new List<Colaborador>()
+            return new List<Dev>()
             {
-                new Colaborador()
+                new Dev()
                 {
                     Nome = "",
                     Cargo = null

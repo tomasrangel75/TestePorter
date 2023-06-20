@@ -140,19 +140,19 @@ namespace TestePorter.Classes
                 get { return text; }
             }
 
-            public static readonly Section empty = new Section(0, "");
+            public static readonly Section empty = new(0, "");
 
-            public static readonly Section thousand = new Section(1, "mil");
+            public static readonly Section thousand = new(1, "mil");
 
-            public static readonly Section million = new Section(2, "milhões");
+            public static readonly Section million = new(2, "milhões");
 
-            public static readonly Section billion = new Section(3, "bilhões");
+            public static readonly Section billion = new(3, "bilhões");
 
-            public static readonly Section trillion = new Section(4, "trilhões");
+            public static readonly Section trillion = new(4, "trilhões");
 
-            public static readonly Section quadrillion = new Section(5, "quatrilhões");
+            public static readonly Section quadrillion = new(5, "quatrilhões");
 
-            public static readonly Section quintillion = new Section(6, "quintilhões");
+            public static readonly Section quintillion = new(6, "quintilhões");
 
             private Section(int sectionValue, string text)
             {
