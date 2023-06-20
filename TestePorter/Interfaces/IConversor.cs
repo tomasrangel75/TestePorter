@@ -10,7 +10,7 @@ namespace TestePorter.Interfaces
 
         string RetornaNumeroPorExtenso(ulong numero);
 
-        int SomaNumerosArray(int[] numeros);
+        long SomaNumerosArray(int[] numeros);
 
         string RetornaResultadoMatematica(string expressao);
 

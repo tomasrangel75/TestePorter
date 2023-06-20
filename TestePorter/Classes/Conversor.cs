@@ -5,6 +5,7 @@ using TestePorter.Interfaces;
 using System.Linq;
 using TestePorter.Exceptions;
 using System.Diagnostics.Metrics;
+using System.Collections.Concurrent;
 
 namespace TestePorter.Classes
 {
@@ -137,13 +138,24 @@ namespace TestePorter.Classes
 
         }
 
-        public int SomaNumerosArray(int[] numeros)
+        public long SomaNumerosArray(int[] numeros)
         {
             if (ArrayNumerosInvalido(numeros)) throw new ArgumentException("Array vazio.");
 
             try
             {
-                var sum = numeros.AsParallel().Sum();
+                long sum = 0;
+                var options = new ParallelOptions()
+                { MaxDegreeOfParallelism = Environment.ProcessorCount };
+                Parallel.ForEach(Partitioner.Create(0, numeros.Length), options, range =>
+                {
+                    long localSum = 0;
+                    for (int i = range.Item1; i < range.Item2; i++)
+                    {
+                        localSum += numeros[i];
+                    }
+                    Interlocked.Add(ref sum, localSum);
+                });
 
                 return sum;
             }
